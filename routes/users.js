@@ -62,5 +62,14 @@ router.get('/logout', (req, res, next) =>{
     err.status = 403;
     next(err);
   }
-})
+});
+router.get('/users', authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) =>{
+  User.find({})
+  .then((users) =>{
+       res.statusCode=200;
+        res.setHeader('content-type', 'application/json');
+        res.json(users);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+});
 module.exports = router;
